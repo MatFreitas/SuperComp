@@ -22,7 +22,6 @@ void pi_r(long Nstart, long Nfinish, double step) {
 }
 
 int main () {
-    long i;
     double step, pi;
     double init_time, final_time;
     step = 1.0/(double) num_steps;

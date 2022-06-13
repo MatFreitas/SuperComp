@@ -1,0 +1,135 @@
+Euclides:
+    Total Instruções: 4,043,231  PROGRAM TOTALS
+
+--------------------------------------------------------------------------------
+-- User-annotated source: euclid.cpp
+--------------------------------------------------------------------------------
+Ir    
+
+    .  #include<iostream>
+    .  #include<vector>
+    .  #include<chrono>
+    .  #include<math.h>
+    .  #include<cmath>
+    .  using namespace std;
+    .  using namespace std::chrono;
+    .  
+   12  void calcula_distancia(vector<vector<double>> &matriz, vector<double> &x, vector<double> &y) {
+    1      int n = x.size();
+  101      for(int i = 0; i < n; i++) {
+    .          vector<double> linha;
+1,560          for(int j = 0; j < n; j++) {
+4,400              double dist = sqrt(pow(x[i] - x[j], 2) + pow(y[i] - y[j], 2));
+    .              linha.push_back(dist);
+    .          }
+    .          matriz.push_back(linha);
+    .      }
+   11  }
+    .  
+   11  int main() {
+    2      vector<vector<double>> D;
+3,110  => /usr/include/c++/9/bits/stl_vector.h:std::vector<std::vector<double, std::allocator<double> >, std::allocator<std::vector<double, std::allocator<double> > > >::~vector() (1x)
+    .      vector<double> x, y;
+    .      int n;
+    .  
+    3      cin >> n;
+6,850  => ???:0x0000000000109190 (1x)
+    .  
+    6      x.reserve(n);
+  241  => /usr/include/c++/9/bits/vector.tcc:std::vector<double, std::allocator<double> >::reserve(unsigned long) (1x)
+    5      y.reserve(n);
+  241  => /usr/include/c++/9/bits/vector.tcc:std::vector<double, std::allocator<double> >::reserve(unsigned long) (1x)
+   87      for(int i = 0; i < n; i++) {
+    .          double xt, yt;
+    .          cin >> xt;
+    .          cin >> yt;
+    .          x.push_back(xt);
+    .          y.push_back(yt);
+    .      }
+    .  
+    5      calcula_distancia(D, x, y);
+45,864  => euclid.cpp:calcula_distancia(std::vector<std::vector<double, std::allocator<double> >, std::allocator<std::vector<double, std::allocator<double> > > >&, std::vector<double, std::allocator<double> >&, std::vector<double, std::allocator<double> >&) (1x)
+    .      
+   62      for (auto &linha : D) {
+1,260          for (double el : linha) {
+    .              cout << el << " ";
+    .          }
+    .          cout << "\n";
+    .      }
+    .  
+    .      return 0;
+   15  }
+
+--------------------------------------------------------------------------------
+Ir    
+--------------------------------------------------------------------------------
+7,541  events annotated
+
+
+
+Euclides-otimizado:
+    Total Instruções: 4,004,529  PROGRAM TOTALS
+
+--------------------------------------------------------------------------------
+-- User-annotated source: euclid-otimizado.cpp
+--------------------------------------------------------------------------------
+Ir    
+
+    .  #include<iostream>
+    .  #include<vector>
+    .  #include<chrono>
+    .  #include<math.h>
+    .  #include<cmath>
+    .  using namespace std;
+    .  using namespace std::chrono;
+    .  
+   12  int main() {
+    .      vector<double> x, y;
+    .      int n;
+    .  
+    3      cin >> n;
+6,850  => ???:0x0000000000109180 (1x)
+   20      double D[n][n];
+    .  
+    4      x.reserve(n);
+  241  => /usr/include/c++/9/bits/vector.tcc:std::vector<double, std::allocator<double> >::reserve(unsigned long) (1x)
+    5      y.reserve(n);
+  241  => /usr/include/c++/9/bits/vector.tcc:std::vector<double, std::allocator<double> >::reserve(unsigned long) (1x)
+  105      for(int i = 0; i < n; i++) {
+    .          double xt, yt;
+    .          cin >> xt;
+    .          cin >> yt;
+    .          x.push_back(xt);
+    .          y.push_back(yt);
+    .      }
+    .  
+   82      for(int i = 0; i < n; i++) {
+1,300          for(int j = 0; j < n; j++) {
+  800              if(i > j) {
+1,140                  D[i][j] = D[j][i];    
+    .              } else {
+2,310                  double dist = sqrt(pow(x[i] - x[j], 2) + pow(y[i] - y[j], 2));
+  237                  D[i][j] = dist;
+    .              }
+    .          }
+    .      }
+    .      
+  123      for(int i = 0; i < n; i++) {
+1,200          for(int j = 0; j < n; j++) {
+    .              cout << D[i][j] << " ";
+    .          }
+    .          cout << endl;
+    .      }
+    .  
+    .      return 0;
+   15  }
+
+--------------------------------------------------------------------------------
+Ir    
+--------------------------------------------------------------------------------
+7,356  events annotated
+
+Ou seja, o cálculo no otimizado tomou 7356 instruções,
+enquanto que no não otimizado tomou 7541, uma ligeira
+diferença apesar de realizarmos o cálculo metade das vezes
+apenas.

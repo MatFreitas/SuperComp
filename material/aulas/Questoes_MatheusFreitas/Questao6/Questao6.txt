@@ -1,0 +1,17 @@
+Questão 6
+
+	Observou-se que o programa não executa, assim, primeiramente tentou-se investigar o motivo disso acontecer (erro de Segmentation Fault). Percebeu-se que este erro acontecia na linha  85, em que a matriz H é alocada de uma vez, o que foi feito com o intuito de economizar acessos à memória (se tivesse feito com vetores, teria de alocar um por um comprometendo o desempenho do programa) e também porque já se tem em mãos os tamanhos n e m antes de calcular a matriz. 
+
+85      int H[n][m];
+
+	O motivo prinicpal disso acontecer é devido ao tamanho grande do arquivo de input, o que foi comprovado alterando os valores de n e m no arquivo "input_seq.txt"  para 50 e 70, por exemplo, e observando que o código executava normalmente após essa alteração. Analisando mais profundamente, talvez esses valores altíssimos "estouram" a capacidade máxima da memória, impossibilitando a declaração da matriz H dessa forma.  
+	Considerando tal problema, uma possível solução seria encontrar um divisor comum para n e m, chamado d, por exemplo, dividir as sequências a e b em d vezes e guardar esses valores em duas listas slices_a e slices_b, por exemplo. Depois disso, repetir o trecho de código das linhas 182-185 d vezes passando cada elemento de slices_a e slices_b no lugar de n e m como argumento para a função "algorithmLocalAlignment". 
+
+182	for(int i = 0; i < 10; i++) {
+183        	algorithmLocalAlignment(n, m, a, b, seed);
+184	        seed++;
+185	}
+
+	Por fim, guardar os melhores resultados de cada par slice_a e slice_b, e, ao final, somar todos os scores de cada par, obtendo um score final máximo. Isso resolveria o problema de "estourar" a memória, dado um divisor d ideal (teria que investigar a calibração desse parâmetro também). Outra possível melhoria ao algoritmo que poderia melhorá-lo é a diminuição do range de k, que sempre possui scores que são descartados por algorithmLocalAlignment quando k = 1, 2, etc. o que poderia ser retificado aumentando o valor inicial do range para 5, por exemplo.
+
+34	uniform_int_distribution<int> distribution_k(1, max_k);

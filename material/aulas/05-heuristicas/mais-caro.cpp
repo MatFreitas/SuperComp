@@ -1,6 +1,6 @@
 #include<iostream>
-#include<algorithm>
 #include<vector>
+#include<algorithm>
 using namespace std;
 
 struct item {
@@ -9,56 +9,49 @@ struct item {
     double valor;
 };
 
-bool comparison_function(item a, item b);
-bool compare(int a, int b);
-
-int main() {
-    int N;
-    int W;
-
-    cin >> N >> W;
-
-    int peso = 0;
-    double valor = 0.0;
-    vector<int> resposta;
-    int T = 0;
-
-    vector<item> v(N);
-    int id = 0;
-
-    for(int i = 0; i < N; i++) {
-        v[id].id = id;
-        cin >> v[id].peso >> v[id].valor;
-        id++;
-    }
-
-
-    sort(v.begin(), v.end(), comparison_function);
-    
-    for(int i = 0; i < N; i++) {
-        if(peso + v[i].peso <= W) {
-            resposta.push_back(v[i].id);
-            peso += v[i].peso;
-            valor += v[i].valor;
-            T += 1;
-        }
-    }
-
-    sort(resposta.begin(), resposta.end(), compare);
-
-    cout << peso << " " << valor << " " << 0 << endl;
-    for(uint i = 0; i < resposta.size(); i++) {
-        cout << resposta[i] << " ";
-    }
-    
-
-    return 0;
-}
-
-bool comparison_function(item a, item b) {
+bool compareByValue(item &a, item &b) {
     return a.valor > b.valor;
 }
 
-bool compare(int a, int b) {
-    return b > a;
+bool compareById(item &a, item &b) {
+    return a.id < b.id;
+}
+
+int main() {
+    int N, W;
+    vector<item> items;
+    vector<item> mochila;
+    double peso = 0;
+    double valor = 0;
+    
+    cin >> N >> W;
+
+    items.reserve(N);
+    for(int i = 0; i < N; i++) {
+        item item;
+        item.id = i;
+        cin >> item.peso >> item.valor;
+        items.push_back(item);
+    }
+
+    sort(items.begin(), items.end(), compareByValue);
+
+    for(int i = 0; i < N; i++) {
+        if(items[i].peso + peso <= W) {
+            mochila.push_back(items[i]);
+            peso += items[i].peso;
+            valor += items[i].valor;
+        }
+    }
+
+    sort(mochila.begin(), mochila.end(), compareById);
+
+    cout << peso << " " << valor << " "<< 0 << endl;
+    for(auto& el: mochila) {
+        cout << el.id << " ";
+    }
+
+    cout << endl;
+
+    return 0;
 }

@@ -1,0 +1,22 @@
+Se diminuo o MIN_BLK, o código paralelizado fica muito pior. Quanto menor
+esse valor, maior o tempo de execução do código. Os ganhos de desempenho
+foram significativos. 
+
+Output execução serial:
+for 2147483648 steps pi = 3.14159265358977 in 2.76633520000178 secs
+
+Output execução paralelizada (MIN_BLK 1024*1024*256):
+for 2147483648 steps pi = 3.14159265358983 in 0.929079800000181 secs
+
+Output execução paralelizada (MIN_BLK 1024*1024):
+for 2147483648 steps pi = 3.14159265358983 in 0.962648700002319 secs
+
+Output execução paralelizada (MIN_BLK 1024):
+for 2147483648 steps pi = 3.14159265358983 in 7.63510490000044 secs
+
+--------------------------------------------------------------------------
+vetor_insert-par.cpp com pragma omp critical: ~0.01 em média
+vetor_insert-par.cpp sem pragma omp critical: ~0.001 secs em média
+vetor_insert-par.cpp com pragma omp critical mas conta fora: ~0.002-0.01 em média
+
+

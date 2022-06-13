@@ -1,0 +1,54 @@
+Questão 2
+
+	A estratégia gulosa não nos garante uma solução ótima, pois se trata de uma heurística, o que nos garante apenas resultados aproximados ou de ganhos de curto prazo, mas não resultados ótimos. Uma heurística é um "truque" para tentar resolver o problema, e no caso da questão anterior, foi utilizada uma gulosa em que adicionamos cada job (ordenados de maneira decrescente) à máquina com a menor carga no momento. Uma outra heurística seria adicionar cada job, ordenado de maneira crescente, ou seja, pegar primeiro os que têm menor tempo de execução, às máquinas com maior carga. No entanto, essas estratégias não garantem que encontraremos a melhor solução de todas, pois o que é feito é pegar uma parte do problema e explorá-la com base em uma premissa estabelecida intuitivamente. Uma maneira de se encontrar uma solução ótima seria por meio da busca exaustiva, mas nem sempre ela é conveniente graças à altíssima complexidade do algoritmo.
+
+Questão 3
+
+	Para cada job, temos apenas duas opções: alocar ou não à uma máquina de menor carga. Se alocarmos, temos um novo subproblema em que a máquina em que o job foi alocado possui uma carga maior. Caso contrário, temos um novo subproblema em que a máquina possui a mesma carga, porém o job não irá mais ser alocado (não faz parte mais da lista de jobs). Um possível pseudo-código seria:
+
+Iniciando com o primeiro job:
+	Encontrar a máquina com menor carga:
+		- Não incluir job nessa máquina, resolver o restante do problema para todos os jobs restantes
+		- Incluir job nessa máquina, resolver o restante do problema para todos os jobs restantes, adicionando
+		  o tempo de execução do job à carga da máquina encontrada
+		- Retornar a melhor dessas opções (menor tempo de execução)
+
+
+Questão 4
+
+	Às vezes, ao se obter uma solução apenas com exploitation, ela pode ser melhorada adicionando uma aleatorização ao processo, que é o exploration. O exploitation nem sempre irá trazer a melhor solução, pois são soluções que geralmente se baseiam em alguma premissa que faça sentido intuitivamente, como no exemplo do problema dos jobs, em que adicionamos os jobs mais "pesados" às máquinas menos "ocupadas". Apesar de parecer fazer sentido, na prática, isso não garante que teremos sempre resultados bons. Ainda se baseando no exemplo da heurística gulosa, pode-se observar que para uma grande quantidade de jobs, ela talvez não tenha uma performance boa. Por isso, é importante também buscar melhorar o desempenho com o exploration, pois com aleatoridade pode-se melhorar o desempenho das soluções que obtive com apenas o exploitation (ou não, por isso é importante rodar várias vezes).
+	No caso da mochila binária, começamos com duas heurísticas que eram 100% exploitation (a do mais caro primeiro, em que começamos pegando os itens mais valiosos e colocando-os na mochila até não caber mais; e a do mais leve, em que começamos pegando os itens mais leves primeiro). Observou-se que a do mais caro possuía bons resultados para n pequenos, enquanto que a do mais leve era mais ideal para n maiores. Para buscar exploration também, uma estratégia adotada foi a de pegar alguma das duas heurísticas citadas anteriormente, e adicionar um trecho em que um item aleatório dentre os restantes ainda não "analisados" era adicionado ou não à mochila com uma certa probabilidade (de 75%, por exemplo). Observou-se que, com essa nova heurística, repetindo esse processo e obtendo 10 soluções, por exemplo, em média já apresentava um desempenho superior às heurísticas do mais caro e mais leve.
+
+Questão 5
+
+--------------------------------------------------------------------------------
+-- User-annotated source: badprime.cpp
+--------------------------------------------------------------------------------
+Ir        
+
+-- line 10 ----------------------------------------
+        .      {
+        .        return false;
+        .      }
+        .    }
+        .    return true;
+        .  }
+        .  
+        .  int main()
+        3  {
+        .    int primeCount = 0;
+2,999,999    for (int i = 0; i < 1000000; ++i)
+        .    {
+        .      if (isPrime(i))
+        .      {
+        .        ++primeCount;
+        .      }
+        .    }
+        6  }
+--------------------------------------------------------------------------------
+Ir        
+--------------------------------------------------------------------------------
+3,000,008  events annotated
+
+
+O trecho que precisa de otimização é o do loop principal dentro do main() que tem um range de 1 milhão.
